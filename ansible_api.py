@@ -23,6 +23,7 @@ class MyRunner(object):
         self.loader = None
         self.options = None
         self.passwords = None
+        self.private_key_file = None
         self.callback = None
         self.__initializeData()
         self.results_raw = {}
@@ -40,9 +41,9 @@ class MyRunner(object):
 
         self.options = Options(connection='ssh', module_path='/usr/bin/ansible', forks=100, become=None,
                                become_method=None, become_user='root', check=False,
-                               diff=False, private_key_file='/root/.ssh/id_rsa')  # 使用公钥
+                               diff=False, private_key_file=self.private_key_file)  # 使用公钥
 
-        # self.passwords = dict(vault_pass='secret',conn_pass='111111')  # 使用密码或公钥指定一个即可，另一个设为None
+        self.passwords = dict(vault_pass='secret',conn_pass=self.passwords)  # 使用密码或公钥指定一个即可，另一个设为None
         self.inventory = InventoryManager(loader=self.loader, sources=self.resource)
         self.variable_manager = VariableManager(loader=self.loader, inventory=self.inventory)
 
